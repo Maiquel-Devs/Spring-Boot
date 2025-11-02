@@ -1,0 +1,112 @@
+meu-projeto/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── exemplo/
+│   │   │           └── meuprojeto/
+│   │   │               ├── MeuProjetoApplication.java   <-- classe principal
+│   │   │               ├── controller/                  <-- controladores REST (API endpoints)
+│   │   │               ├── service/                     <-- lógica de negócio
+│   │   │               ├── repository/                  <-- acesso a dados (interfaces JPA)
+│   │   │               └── model/                       <-- classes de domínio (entidades)
+│   │   └── resources/
+│   │       ├── application.properties (ou application.yml) <-- configurações
+│   │       ├── static/                   <-- arquivos estáticos (css, js, imagens)
+│   │       └── templates/                <-- templates Thymeleaf ou outros engines de template
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── exemplo/
+│                   └── meuprojeto/
+│                       └── (testes unitários)
+├── mvnw / mvnw.cmd / gradlew / gradlew.bat  <-- wrappers para Maven/Gradle
+├── pom.xml / build.gradle                   <-- configuração do projeto e dependências
+└── README.md
+
+
+O que são as principais pastas e arquivos?
+
+src/main/java               ****
+
+Aqui fica o código fonte Java da sua aplicação.
+
+Classe principal:
+
+Aquela que tem @SpringBootApplication e o método main(). Exemplo:
+
+@SpringBootApplication
+public class MeuProjetoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MeuProjetoApplication.class, args);
+    }
+}
+
+
+
+- controller/
+
+Classes com @RestController ou @Controller que definem os endpoints (rotas da API).
+
+- service/
+
+Classes que contêm a lógica de negócio, regras do sistema.
+
+- repository/
+
+Interfaces que estendem JpaRepository ou similares para acessar o banco de dados.
+
+- model/
+
+Classes que representam entidades do banco de dados (com @Entity).
+
+
+
+
+src/main/resources          ****
+
+- application.properties ou application.yml
+
+Arquivo de configuração do Spring Boot (porta do servidor, conexões com banco, etc).
+
+- static/
+
+Arquivos estáticos para frontend (ex: CSS, JS, imagens).
+
+- templates/
+
+Templates HTML para renderização no backend (usando Thymeleaf ou outro engine).
+
+
+src/test/java              ****
+
+Código dos testes unitários e de integração.
+
+
+
+pom.xml ou build.gradle
+
+Arquivo que declara as dependências do projeto, plugins, versões, etc.
+
+
+
+Wrappers (mvnw, gradlew)
+
+Scripts para rodar o Maven ou Gradle mesmo se não estiver instalado globalmente.
+
+
+
+
+
+
+Fluxo básico da aplicação
+
+1. O usuário faz uma requisição HTTP (ex: GET, POST) para um endpoint definido no controller.
+
+2. O controller chama o service para executar a lógica de negócio.
+
+3. O service pode usar o repository para acessar o banco de dados.
+
+4. O repository interage com o banco (ex: via JPA).
+
+5. A resposta é devolvida pelo controller ao cliente.
