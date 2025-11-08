@@ -1,0 +1,135 @@
+                                        *** Rotas ***
+
+
+1. Visão geral do projeto:
+
+Este projeto é uma aplicação web simples desenvolvida com Spring Boot. Ela possui duas rotas que exibem
+páginas HTML estáticas estilizadas com CSS. O objetivo é mostrar como criar um projeto básico usando
+Spring Boot, Thymeleaf para templates e uma estrutura organizada de arquivos.
+
+
+2. Estrutura do projeto:
+
+A estrutura do projeto segue o padrão Maven e inclui as seguintes pastas principais:
+
+src/
+ ├── main/
+ │    ├── java/
+ │    │    └── com/
+ │    │         └── example/
+ │    │              └── meusegundospring/
+ │    │                   └── MeuSegundoSpringApplication.java
+ │    └── resources/
+ │         ├── static/
+ │         │    └── css/
+ │         │         └── estilo.css
+ │         └── templates/
+ │               ├── home.html
+ │               └── sobre.html
+
+
+- java/: contém o código-fonte Java da aplicação, incluindo a classe principal e o controller.
+
+- resources/templates/: onde ficam os arquivos HTML de template processados pelo Thymeleaf.
+
+- resources/static/css/: pasta onde ficam os arquivos CSS para estilizar as páginas.
+
+
+
+1. Classe Principal:
+
+A classe principal é o ponto de entrada do projeto. Ela inicia a aplicação Spring Boot.
+
+
+@SpringBootApplication
+public class MeuSegundoSpringApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MeuSegundoSpringApplication.class, args);
+    }
+}
+
+
+- @SpringBootApplication diz que é uma aplicação Spring Boot.
+
+- main inicia a aplicação.
+
+
+2. Controller:
+
+O controller cria as rotas e responde as requisições HTTP.
+
+
+@Controller
+public class PaginaController {
+
+    @GetMapping("/")
+    public String home() {
+        return "home";  // mostra o arquivo home.html
+    }
+
+    @GetMapping("/sobre")
+    public String sobre() {
+        return "sobre"; // mostra o arquivo sobre.html
+    }
+}
+
+
+- @Controller marca a classe como controladora web.
+
+- @GetMapping define a URL da rota.
+
+- O método retorna o nome do arquivo HTML dentro da pasta templates.
+
+
+3. Templates HTML (Thymeleaf):
+
+Os arquivos HTML ficam dentro de src/main/resources/templates/.
+
+Exemplo de home.html:
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <h1>Página Home</h1>
+    <p>Bem-vindo ao Meu Segundo Spring Boot!</p>
+</body>
+</html>
+
+
+- xmlns:th="http://www.thymeleaf.org"  habilita comandos do Thymeleaf.
+
+- th:href="@{/css/estilo.css}"  carrega o CSS da pasta static/css.
+
+
+4. CSS
+
+O CSS fica em src/main/resources/static/css/estilo.css e define o estilo da página.
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 20px;
+    color: #333;
+}
+
+h1 {
+    color: #007acc;
+}
+
+
+5. Rotas criadas
+
+
+http://localhost:8080/              home.html (Home)
+
+http://localhost:8080/sobre         sobre.html (Sobre)
+
+
+
