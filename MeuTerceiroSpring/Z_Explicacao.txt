@@ -1,0 +1,225 @@
+                                Projeto Spring Boot - Sistema Simples de Usuários
+
+1. Visão geral do projeto:
+
+Este projeto é uma aplicação web simples em Spring Boot que permite cadastrar, listar e remover usuários.
+
+A aplicação utiliza o framework Thymeleaf para renderizar páginas HTML dinâmicas, e o Spring Data JPA
+para interagir com o banco de dados MySQL.
+
+O foco principal do projeto é mostrar como a comunicação ocorre entre o backend (Java, Spring Boot) e o
+frontend (HTML com Thymeleaf), explicando passo a passo como cada parte do código colabora para o
+funcionamento completo.
+
+
+2. Estrutura do projeto
+
+src/
+ ├── main/
+ │    ├── java/
+ │    │    └── com/
+ │    │         └── example/
+ │    │              └── MeuTerceiroSpring/
+ │    │                   ├── controller/
+ │    │                   │     └── UsuarioController.java
+ │    │                   ├── model/
+ │    │                   │     └── Usuario.java
+ │    │                   ├── repository/
+ │    │                   │     └── UsuarioRepository.java
+ │    │                   └── MeuTerceiroSpringApplication.java
+ │    └── resources/
+ │         ├── static/
+ │         └── templates/
+ │               ├── cadastrar.html
+ │               └── listar.html
+ └── application.properties
+
+
+
+- controller/: define rotas e manipula dados vindos do frontend.
+- model/: representa a estrutura do dado (Usuário).
+- repository/: abstrai o acesso ao banco de dados.
+- templates/: contém arquivos HTML processados pelo Thymeleaf para mostrar as páginas.
+- application.properties: configurações gerais da aplicação, banco, etc.
+
+
+3. Classe Principal — Início da Aplicação:
+
+
+@SpringBootApplication
+public class MeuTerceiroSpringApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MeuTerceiroSpringApplication.class, args);
+    }
+}
+
+
+- @SpringBootApplication: marca o projeto como uma aplicação Spring Boot.
+- O método main inicializa o servidor embutido (Tomcat), que ficará escutando requisições HTTP.
+
+
+4. Modelo — Usuario.java:
+
+
+@Entity
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+    private Integer idade;
+
+    // getters e setters ...
+}
+
+
+- A anotação @Entity informa que esta classe será mapeada para uma tabela no banco.
+- id é a chave primária gerada automaticamente.
+- Os atributos nome e idade serão colunas da tabela.
+- Os getters e setters são usados pelo framework para ler e escrever os dados.
+
+
+5. Repositório — UsuarioRepository.java:
+
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}
+
+
+- Extende JpaRepository, que oferece métodos prontos para salvar, listar, remover dados do banco.
+- Não precisa implementar código: o Spring Data JPA gera tudo automaticamente.
+
+
+6. Controller — UsuarioController.java:
+
+
+@Controller
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/usuario/cadastrar";  // Redireciona para o formulário
+    }
+
+    @GetMapping("/usuario/cadastrar")
+    public String mostrarFormularioCadastro(Model model) {
+        model.addAttribute("usuario", new Usuario());  // Cria um objeto vazio para o formulário
+        return "cadastrar";  // Retorna o arquivo cadastrar.html
+    }
+
+    @PostMapping("/usuario/salvar")
+    public String salvarUsuario(@ModelAttribute Usuario usuario) {
+        usuarioRepository.save(usuario);  // Salva o usuário no banco
+        return "redirect:/usuario/listar";  // Redireciona para a lista de usuários
+    }
+
+    @GetMapping("/usuario/listar")
+    public String listarUsuarios(Model model) {
+        model.addAttribute("usuarios", usuarioRepository.findAll());  // Busca todos usuários do banco
+        return "listar";  // Retorna o arquivo listar.html
+    }
+
+    @GetMapping("/usuario/remover/{id}")
+    public String removerUsuario(@PathVariable Long id) {
+        usuarioRepository.deleteById(id);  // Remove usuário pelo id
+        return "redirect:/usuario/listar";  // Atualiza lista
+    }
+}
+
+
+Comunicação do Controller com Frontend e Banco:
+
+- Métodos anotados com @GetMapping ou @PostMapping definem as rotas acessíveis via URL.
+
+- O parâmetro Model model permite enviar objetos do backend para a camada visual (HTML).
+
+- model.addAttribute() adiciona objetos que podem ser usados pelo Thymeleaf para preencher os formulários ou tabelas.
+
+- Métodos que retornam "cadastrar" ou "listar" indicam qual template HTML será carregado.
+
+- O redirect: indica para o navegador carregar outra rota depois da ação (exemplo: depois de salvar um usuário, vai para listar).
+
+
+7. Templates HTML (Thymeleaf) e Comunicação:
+
+cadastrar.html
+
+<form th:action="@{/usuario/salvar}" th:object="${usuario}" method="post">
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" required />
+    <label>Idade:</label>
+    <input type="number" th:field="*{idade}" required />
+    <button type="submit">Salvar</button>
+</form>
+
+
+- th:action define para onde os dados do formulário serão enviados (rota POST /usuario/salvar).
+
+- th:object="${usuario}" conecta o formulário ao objeto Usuario criado no controller.
+
+- th:field="*{nome}" liga o campo de texto ao atributo nome do objeto.
+
+- th:field="*{idade}": liga o campo numérico ao atributo idade do objeto Usuario.
+
+- Quando o usuário envia o formulário, os dados chegam no método salvarUsuario() do controller.
+
+
+listar.html
+
+<tr th:each="usuario : ${usuarios}">
+    <td th:text="${usuario.id}"></td>
+    <td th:text="${usuario.nome}"></td>
+    <td th:text="${usuario.idade}"></td>
+    <td><a th:href="@{'/usuario/remover/' + ${usuario.id}}">Remover</a></td>
+</tr>
+
+
+- th:each itera sobre a lista usuarios enviada pelo controller.
+
+- Cada linha mostra os dados do usuário.
+
+- O link “Remover” chama a rota /usuario/remover/{id}, que faz a exclusão no backend.
+
+
+8. Fluxo completo de comunicação::
+
+
+1 - Usuário acessa o navegador em http://localhost:8080/.
+
+2 - O controller redireciona para /usuario/cadastrar, que retorna a página com o formulário.
+
+3 - O formulário é carregado, usando o objeto usuario do backend para preencher campos (no caso, vazio para cadastro).
+
+4 - O usuário preenche o formulário e envia.
+
+5 - Os dados vão para o backend na rota /usuario/salvar.
+
+6 - O controller recebe, salva o objeto no banco.
+
+7 - O controller redireciona para /usuario/listar, que busca todos os usuários e envia para o template listar.html.
+
+8 - O usuário vê a lista e pode clicar em "Remover", que chama o backend para apagar aquele usuário.
+
+9 - O backend atualiza a lista e a página é recarregada com os dados atualizados.
+
+
+...........................................................................................................
+                                        Código Sql Usado
+
+CREATE DATABASE MeuBancoSpring;
+
+use MeuBancoSpring;
+
+CREATE USER 'ProjetoSpring'@'localhost' IDENTIFIED BY 'SpringPassword';
+
+GRANT ALL PRIVILEGES ON MeuBancoSpring.* TO 'ProjetoSpring'@'localhost';
+
+FLUSH PRIVILEGES;	/*Atualizar as permissões*/
+
+
+select * from usuario;

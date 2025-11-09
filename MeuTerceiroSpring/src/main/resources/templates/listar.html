@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lista de Usuários</title>
+</head>
+<body>
+<h1>Usuários Cadastrados</h1>
+
+<!-- Tabela para mostrar a lista de usuários -->
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>Ações</th>
+    </tr>
+
+    <!-- Percorre a coleção 'usuarios' que vem do controller -->
+    <tr th:each="usuario : ${usuarios}">
+
+        <!-- Exibe o id do usuário -->
+        <td th:text="${usuario.id}"></td>
+
+        <!-- Exibe o nome do usuário -->
+        <td th:text="${usuario.nome}"></td>
+
+        <!-- Exibe a idade do usuário -->
+        <td th:text="${usuario.idade}"></td>
+
+        <td>
+            <!-- Link para remover o usuário, envia requisição GET para /usuario/remover/{id} -->
+            <a th:href="@{'/usuario/remover/' + ${usuario.id}}" onclick="return confirm('Remover este usuário?')">Remover</a>
+        </td>
+    </tr>
+</table>
+<br/>
+
+<!-- Link para voltar para o formulário de cadastro -->
+<a th:href="@{/usuario/cadastrar}">Cadastrar Novo Usuário</a>
+
+</body>
+</html>

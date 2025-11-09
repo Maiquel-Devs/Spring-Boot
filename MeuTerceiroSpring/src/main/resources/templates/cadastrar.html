@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastrar Usuário</title>
+</head>
+<body>
+<h1>Cadastrar Usuário</h1>
+
+<!-- Formulário que envia os dados para o endpoint /usuario/salvar via POST -->
+<form th:action="@{/usuario/salvar}" th:object="${usuario}" method="post">
+
+    <!-- Campo para o nome, ligado ao atributo 'nome' do objeto Usuario -->
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" required />
+    <br/>
+
+    <!-- Campo para a idade, ligado ao atributo 'idade' do objeto Usuario -->
+    <label>Idade:</label>
+    <input type="number" th:field="*{idade}" required />
+    <br/>
+
+    <!-- Botão para enviar o formulário -->
+    <button type="submit">Salvar</button>
+</form>
+
+<br/>
+
+<!-- Link para acessar a lista de usuários cadastrados -->
+<a th:href="@{/usuario/listar}">Ver Usuários Cadastrados</a>
+
+</body>
+</html>
+
+<!--
+
+th:action="@{/usuario/salvar}": define para onde o formulário será enviado no
+backend (a rota POST /usuario/salvar do seu controller).
+
+th:object="${usuario}": associa o formulário ao objeto usuario criado no
+controller (ex: model.addAttribute("usuario", new Usuario())).
+
+th:field="*{nome}" e th:field="*{idade}": ligam os campos do formulário aos
+atributos nome e idade do objeto usuario.
+
+Quando o usuário preencher e enviar o formulário, o Spring recebe os dados automaticamente
+convertidos no objeto Usuario graças ao @ModelAttribute no controller.
+
+
+
+-->
