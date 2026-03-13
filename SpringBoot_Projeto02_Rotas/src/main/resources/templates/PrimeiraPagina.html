@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">      <!--Permite usar th:href-->
+<head>
+    <meta charset="UTF-8">
+    <title>Página 1</title>
+</head>
+
+<body>
+<h1>Esta é a Primeira Página</h1>
+<p>O servidor Spring Boot que serviu este arquivo.</p>
+
+<a th:href="@{/segunda}">Ir para a Segunda Página</a>   <!-- Usa a rota do back-end criada pelo Controller -->
+
+</body>
+</html>
