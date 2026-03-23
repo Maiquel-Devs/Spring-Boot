@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Usuários</title>
+</head>
+
+<body>
+    <h2>Cadastrar Novo Usuário</h2>
+
+    <!-- Formulário que envia os dados para o Controller -->
+    <!-- th:action="@{/cadastrar}" chama a rota POST "/cadastrar" -->
+    <!-- Essa rota é tratada no método cadastrarPessoa(Pessoa pessoa) no UserController -->
+    <form th:action = "@{/cadastrar}" method="post">
+
+        <label>Nome:</label>
+        <!-- name="nome" precisa ser igual ao atributo da classe Pessoa -->
+        <!-- O Spring automaticamente pega esse valor e preenche o objeto Pessoa -->
+        <input type="text" name="nome" placeholder="Digite seu nome" required>
+
+        <label>Idade:</label>
+        <!-- Mesmo conceito: name="idade" será enviado para o objeto Pessoa -->
+        <input type="number" name="idade" placeholder="Digite sua idade" required>
+
+        <button type="submit">Adicionar Usuário</button>
+
+    </form>
+
+    <hr>
+
+    <table border="1">
+
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- th:each percorre a lista enviada pelo Controller -->
+            <!-- "listaPessoasHTML" foi adicionada no model no método exibirPagina() -->
+            <!-- Para cada item da lista, ele cria uma linha da tabela -->
+            <tr th:each="p : ${listaPessoasHTML}">
+
+                <!-- th:text substitui o conteúdo da tag pelo valor do atributo -->
+                <!-- p.nome vem da classe Pessoa -->
+                <td th:text="${p.nome}"></td>
+
+                <!-- p.idade também vem da classe Pessoa -->
+                <td th:text="${p.idade}"></td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+</html>
