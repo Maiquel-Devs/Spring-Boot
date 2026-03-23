@@ -12,14 +12,24 @@ public class Pessoa
         this.idade = idade;
     }
 
-    // Apenas os Métodos Getters (O Thymeleaf usa isso para ler o dado e mostrar na tela)
+    // Métodos Getter e Setter para usar nos Formularios
     public String getNome()
     {
         return nome;
     }
 
+    public void setNome(String nome)
+    {
+        this.nome = nome;
+    }
+
     public int getIdade()
     {
         return idade;
+    }
+
+    public void setIdade(int idade)
+    {
+        this.idade = idade;
     }
 }

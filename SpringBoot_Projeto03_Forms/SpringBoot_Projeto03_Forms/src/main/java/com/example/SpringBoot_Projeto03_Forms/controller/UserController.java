@@ -1,4 +1,4 @@
-package com.example.SpringBoot_Projeto03_Forms.controller; // Verifique se o nome do seu projeto está certo aqui
+package com.example.SpringBoot_Projeto03_Forms.controller;
 
 import com.example.SpringBoot_Projeto03_Forms.model.Pessoa;
 import org.springframework.stereotype.Controller;
