@@ -1,7 +1,96 @@
-<!--
-Configurar o Banco de Dados no Application.properties
-Estudar o PessoasController.Java
-E fazer o frot end (index.html)
+<!DOCTYPE html>
+<!-- Define que o documento é HTML5 -->
 
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Ativa o Thymeleaf (th:...) para usar variáveis vindas do Controller -->
 
--->
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Primeiro CRUD Spring</title>
+
+    <!-- Importa o CSS da pasta static/css -->
+    <!-- O @{} é do Thymeleaf para resolver o caminho -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Cadastro de Usuários</h2>
+
+    <!-- FORMULÁRIO -->
+    <!-- th:action → para onde os dados vão (mapeia com @PostMapping("/salvar")) -->
+    <!-- th:object="${pessoa}" → conecta o formulário com o objeto Pessoa do Controller -->
+    <form th:action="@{/pessoas/salvar}" th:object="${pessoa}" method="POST">
+
+        <!-- Campo escondido (ID) -->
+        <!-- MUITO IMPORTANTE -->
+        <!-- Se tiver ID → UPDATE -->
+        <!-- Se NÃO tiver ID → INSERT -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Campo nome -->
+        <!-- th:field="*{nome}" conecta com atributo "nome" da classe Pessoa -->
+        <input type="text" th:field="*{nome}" placeholder="Digite o nome" required />
+
+        <!-- Campo idade -->
+        <input type="number" th:field="*{idade}" placeholder="Idade" required />
+
+        <!-- Botão que envia o formulário -->
+        <button type="submit">Gravar Dados</button>
+    </form>
+
+    <h2>Lista de Cadastrados</h2>
+
+    <!-- TABELA COM OS DADOS -->
+    <table>
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <!-- LOOP -->
+        <!-- Percorre a lista "ListaDePessoas" que veio do Controller -->
+        <!-- Cada item vira "p" -->
+        <tr th:each="p : ${ListaDePessoas}">
+
+            <!-- Mostra o nome -->
+            <td th:text="${p.nome}"></td>
+
+            <!-- Mostra a idade -->
+            <td th:text="${p.idade}"></td>
+
+            <td>
+
+                <!-- BOTÃO EDITAR -->
+                <!-- Monta uma URL dinâmica: /pessoas/editar/ID -->
+                <!-- Vai chamar o método @GetMapping("/editar/{id}") -->
+                <a class="btn-edit"
+                   th:href="@{/pessoas/editar/{id}(id=${p.id})}">
+                    Editar
+                </a>
+
+                <!-- BOTÃO DELETAR -->
+                <!-- Também monta URL dinâmica -->
+                <!-- Vai chamar @GetMapping("/deletar/{id}") -->
+                <!-- confirm → pergunta antes de deletar -->
+                <a class="btn-delete"
+                   th:href="@{/pessoas/deletar/{id}(id=${p.id})}"
+                   onclick="return confirm('Deseja realmente excluir?')">
+                    Excluir
+                </a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
