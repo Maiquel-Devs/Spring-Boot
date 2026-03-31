@@ -9,3 +9,5 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>
 {
     // Aqui já temos os métodos save(), findAll(), deleteById(), etc.
 }
+
+// Cria a tabela pessoa usando o Molde do Pessoa.Java "Arrumar esse texto"
