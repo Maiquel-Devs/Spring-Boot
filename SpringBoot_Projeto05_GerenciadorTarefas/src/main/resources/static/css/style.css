@@ -1,0 +1,29 @@
+/* src/main/resources/static/css/style.css */
+
+.bg-custom-gradient {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.btn-primary-custom {
+    background-color: #0d6efd;
+    border: none;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-primary-custom:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-1px);
+}
+
+.card-custom {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.form-control-custom:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+}
